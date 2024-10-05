@@ -20,8 +20,8 @@ bool switch1 = false;
 #define deftemp 0
 uint16_t val = 0x0;
 
-int16_t temperature;
-int16_t humidity;
+int16_t temperature = 0;
+int16_t humidity = 0;
 
 //id дополнительных атрибутов
 uint16_t cust_attr_high_temp = 0x0221;
@@ -346,6 +346,7 @@ static void esp_zb_task(void *pvParameters)
     esp_zb_cfg_t zb_nwk_cfg = ESP_ZB_ZR_CONFIG();
     esp_zb_init(&zb_nwk_cfg);
     esp_zb_cluster_list_t *esp_zb_cluster_list = esp_zb_zcl_cluster_list_create();
+    esp_zb_cluster_list_t *esp_zb_cluster_list_onoff = esp_zb_zcl_cluster_list_create();
     esp_zb_cluster_list_t *esp_zb_cluster_list_temp = esp_zb_zcl_cluster_list_create();
     
     //------------------------------------------ Attribute ------------------------------------------------
@@ -396,14 +397,15 @@ static void esp_zb_task(void *pvParameters)
 
     esp_zb_cluster_list_add_basic_cluster(           esp_zb_cluster_list, esp_zb_basic_cluster,       ESP_ZB_ZCL_CLUSTER_SERVER_ROLE);
     esp_zb_cluster_list_add_identify_cluster(        esp_zb_cluster_list, esp_zb_identify_cluster,    ESP_ZB_ZCL_CLUSTER_SERVER_ROLE);
-    esp_zb_cluster_list_add_temperature_meas_cluster(esp_zb_cluster_list_temp, esp_zb_temp_client_cluster, ESP_ZB_ZCL_CLUSTER_CLIENT_ROLE);
+    //esp_zb_cluster_list_add_temperature_meas_cluster(esp_zb_cluster_list_temp, esp_zb_temp_client_cluster, ESP_ZB_ZCL_CLUSTER_CLIENT_ROLE);
     esp_zb_cluster_list_add_temperature_meas_cluster(esp_zb_cluster_list, esp_zb_temp_server_cluster, ESP_ZB_ZCL_CLUSTER_SERVER_ROLE);
     esp_zb_cluster_list_add_humidity_meas_cluster(   esp_zb_cluster_list, esp_zb_hum_server_cluster,  ESP_ZB_ZCL_CLUSTER_SERVER_ROLE);
-    esp_zb_cluster_list_add_on_off_cluster(          esp_zb_cluster_list, esp_zb_on_off_cluster,      ESP_ZB_ZCL_CLUSTER_SERVER_ROLE);
+    esp_zb_cluster_list_add_on_off_cluster(          esp_zb_cluster_list_onoff, esp_zb_on_off_cluster,      ESP_ZB_ZCL_CLUSTER_SERVER_ROLE);
     //------------------------------------------ Endpoint ------------------------------------------------
     esp_zb_ep_list_t *esp_zb_ep_list = esp_zb_ep_list_create();
     esp_zb_ep_list_add_ep(esp_zb_ep_list, esp_zb_cluster_list, HA_ENDPOINT, ESP_ZB_AF_HA_PROFILE_ID, ESP_ZB_HA_TEMPERATURE_SENSOR_DEVICE_ID);
     esp_zb_ep_list_add_ep(esp_zb_ep_list, esp_zb_cluster_list_temp, HA_TEMP_ENDPOINT, ESP_ZB_AF_HA_PROFILE_ID, ESP_ZB_HA_TEMPERATURE_SENSOR_DEVICE_ID);
+    esp_zb_ep_list_add_ep(esp_zb_ep_list, esp_zb_cluster_list_onoff, ONOFF_ENDPOINT, ESP_ZB_AF_HA_PROFILE_ID, ESP_ZB_HA_ON_OFF_SWITCH_DEVICE_ID);
     esp_zb_device_register(esp_zb_ep_list);
     
     //------------------------------------------ Callback ------------------------------------------------
@@ -444,6 +446,6 @@ void app_main(void)
     xTaskCreate(esp_zb_task, "Zigbee_main", 4096, NULL, 5, NULL);
     xTaskCreate(&readData, "ReadData", 4096, (void *)&sht30, 5, NULL);
     xTaskCreate(temp_report_main, "Tempreture_report", 4096, NULL, 5, NULL);
-    xTaskCreate(led_task, "Led Task", 4096, NULL, 5, NULL);
+    //xTaskCreate(led_task, "Led Task", 4096, NULL, 5, NULL);
     
 }

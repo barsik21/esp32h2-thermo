@@ -4,6 +4,7 @@
 #define INSTALLCODE_POLICY_ENABLE       false
 #define HA_ENDPOINT 1
 #define HA_TEMP_ENDPOINT 2
+#define ONOFF_ENDPOINT 3
 #define ESP_ZB_PRIMARY_CHANNEL_MASK     (1l << 13) 
 
 #define LED_PIN1 10
