@@ -10,6 +10,18 @@
     "i2c_master.h": "c",
     "esp_zigbee_type.h": "c",
     "compare": "c",
-    "cstdint": "c"
+    "cstdint": "c",
+    "esp_zigbee_ha_standard.h": "c",
+    "esp_zigbee_zcl_command.h": "c",
+    "esp_zigbee_cluster.h": "c",
+    "zigbee.h": "c",
+    "task.h": "c",
+    "iot_button.h": "c",
+    "esp_check.h": "c",
+    "string.h": "c",
+    "esp_log.h": "c",
+    "nvs_flash.h": "c",
+    "nvs.h": "c",
+    "esp_flash.h": "c"
   }
 }

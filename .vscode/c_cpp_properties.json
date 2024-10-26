@@ -14,7 +14,8 @@
                 "path": [
                     "${config:idf.espIdfPath}/components",
                     "${config:idf.espIdfPathWin}/components",
-                    "${workspaceFolder}"
+                    "${workspaceFolder}",
+                    "${workspaceFolder}/**"
                 ],
                 "limitSymbolsToIncludedHeaders": true
             }
